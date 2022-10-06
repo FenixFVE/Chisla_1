@@ -209,7 +209,9 @@ void compute_SLE_by_forward_move_test_2() {
 // - - -
 
 void LU_decompose_matrix_test() {
-	BandMatrix<double> matrix = read_matrix<double>("test_matrix_3.txt");
+	// Ax = y
+	// LUx = L(Ux) = y
+	BandMatrix<double> matrix = read_matrix<double>("test_matrix_2.txt");
 	vector<double> x = { 1, 2, 3, 4, 5 }; // x
 	vector<double> y(5); //
 	matrix.multiply_matrix_on_vector(x, y);
@@ -228,32 +230,10 @@ void LU_decompose_matrix_test() {
 	}
 }
 
-void LU_decompose_matrix_test_2() {
-	// Ax = y
-	// LUx = L(Ux) = y
-	BandMatrix<double> matrix = read_matrix<double>("test_matrix_2.txt");
-	vector<double> x = { 1, 2, 3, 4, 5 }; // x
-	vector<double> y(5); //
-	matrix.multiply_matrix_on_vector(x, y);
-
-	matrix.LU_decompose_matrix<double>();
-	vector<double> t1(5);
-	matrix.multiply_upper_matrix_on_vector(x, t1);
-	vector<double> t2(5);
-	matrix.multiply_lower_matrix_on_vector(t1, t2);
-
-	double eps = 0.000'000'000'1;
-	for (int i = 0; i < t2.size(); ++i) {
-		if (abs(t2[i] - y[i]) > eps) {
-			throw std::exception("LU decomposition test_2 failed");
-		}
-	}
-}
-
 // - - -
 
 void compute_SLE_test() {
-	BandMatrix<double> matrix = read_matrix<double>("test_matrix_3.txt");
+	BandMatrix<double> matrix = read_matrix<double>("test_matrix_2.txt");
 	vector<double> x = { 1, 2, 3, 4, 5 };
 	vector<double> y(5);
 	matrix.multiply_matrix_on_vector(x, y);
@@ -267,25 +247,6 @@ void compute_SLE_test() {
 	for (int i = 0; i < x.size(); ++i) {
 		if (abs(x[i] - x_actual[i]) > eps) {
 			throw std::exception("SLE computition test failed");
-		}
-	}
-}
-
-void compute_SLE_test_2() {
-	BandMatrix<double> matrix = read_matrix<double>("test_matrix_2.txt");
-	vector<double> x = { 1, 2, 3, 4, 5 };
-	vector<double> y(5);
-	matrix.multiply_matrix_on_vector(x, y);
-
-	vector<double> buffer(5);
-	vector<double> x_actual(5);
-
-	matrix.compute_SLE<double>(y, x_actual, buffer);
-
-	double eps = 0.000'000'000'1;
-	for (int i = 0; i < x.size(); ++i) {
-		if (abs(x[i] - x_actual[i]) > eps) {
-			throw std::exception("SLE computition test_2 failed");
 		}
 	}
 }
@@ -319,11 +280,9 @@ void testing() {
 		std::cout << "forward SLE computition tested\n";
 
 		LU_decompose_matrix_test();
-		LU_decompose_matrix_test_2();
 		std::cout << "LU decomposition tested\n";
 
 		compute_SLE_test();
-		compute_SLE_test_2();
 		std::cout << "SLE computition tested\n";
 
 		std::cout << "tests result: everything works\n";

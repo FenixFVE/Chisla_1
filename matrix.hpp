@@ -21,6 +21,7 @@ public:
 	vector<vector<T>> al;
 	vector<vector<T>> au;
 	vector<T> di;
+	T eps;
 
 	BandMatrix(int matrix_size, int band_size) {
 		this->matrix_size = matrix_size;
@@ -29,6 +30,7 @@ public:
 		al = vector<vector<T>>(matrix_size, vector<T>(half_band, 0.0));
 		au = vector<vector<T>>(matrix_size, vector<T>(half_band, 0.0));
 		di = vector<T>(matrix_size, 0.0);
+		eps = (typeid(T) == typeid(float)) ? FLT_EPSILON : DBL_EPSILON;
 	}
 
 	// Ux=y, y=?
@@ -107,6 +109,12 @@ public:
 	template<std::floating_point F>
 	void LU_decompose_matrix() {
 
+		for (T elem : di) {
+			if (std::abs(elem) <= eps) {
+				throw std::exception("matrix is not decomposable");
+			}
+		}
+
 		int half_band = band_size / 2;
 		for (int i = 0; i < matrix_size; ++i) {
 			
@@ -132,7 +140,10 @@ public:
 				while (l_j >= 0 && u_i >= 0 && u_j < half_band) {
 					sum += al[i][l_j--] * au[u_i--][u_j++];
 				}
-				di[i] -= sum;
+				di[i] -=  sum;
+				if (std::abs(di[i]) <= eps) {
+					throw std::exception("matrix is not decomposable");
+				}
 			}
 			
 			// upper
@@ -261,4 +272,30 @@ void print_vector(const vector<T>& vec, std::string vector_file, int precision) 
 		stream << x << '\n';
 	}
 
+}
+
+BandMatrix<double> create_Gilbert_matrix(int size) {
+
+	BandMatrix<double> band_matrix(size, 2 * (size - 1) + 1);
+
+	int half_band = size - 1;
+
+	for (int i = 0; i < size; ++i) {
+		band_matrix.di[i] = 1.0 / (i + i + 1);
+	}
+
+	for (int i = 0; i < size; ++i) {
+
+		int l_j = std::min(half_band - 1, half_band - i);
+		for (int j = 0; j < i && l_j < half_band; ++j, ++l_j) {
+			band_matrix.al[i][l_j] = 1.0 / (i + j + 1);
+		}
+
+		int u_j = 0;
+		for (int j = i + 1; j < size && u_j < half_band; ++j, ++u_j) {
+			band_matrix.au[i][u_j] = 1.0 / (i + j + 1);
+		}
+	}
+
+	return band_matrix;
 }

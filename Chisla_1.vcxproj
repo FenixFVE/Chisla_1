@@ -119,6 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,6 +139,7 @@
     <Text Include="input_matrix.txt" />
     <Text Include="input_vector.txt" />
     <Text Include="matrix_A.txt" />
+    <Text Include="matrix_A_2.txt" />
     <Text Include="output.txt" />
     <Text Include="test_matrix_1.txt" />
     <Text Include="test_matrix_2.txt" />

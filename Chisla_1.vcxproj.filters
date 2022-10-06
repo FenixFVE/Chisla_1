@@ -50,5 +50,6 @@
     <Text Include="vector_x_star.txt" />
     <Text Include="vector_x_k.txt" />
     <Text Include="vector_of_dif.txt" />
+    <Text Include="matrix_A_2.txt" />
   </ItemGroup>
 </Project>
