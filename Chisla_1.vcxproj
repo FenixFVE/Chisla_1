@@ -137,9 +137,14 @@
   <ItemGroup>
     <Text Include="input_matrix.txt" />
     <Text Include="input_vector.txt" />
+    <Text Include="matrix_A.txt" />
+    <Text Include="output.txt" />
     <Text Include="test_matrix_1.txt" />
     <Text Include="test_matrix_2.txt" />
+    <Text Include="test_matrix_3.txt" />
     <Text Include="test_vector_1.txt" />
+    <Text Include="vector_F_k.txt" />
+    <Text Include="vector_x_star.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

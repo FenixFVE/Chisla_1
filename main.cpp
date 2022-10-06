@@ -1,11 +1,12 @@
 
 #include "matrix.hpp"
 #include "testing.hpp"
-//#include <iostream>
+#include <iostream>
 
 template<class T>
 void _main() {
-	testing();
+	//testing();
+	
 }
 
 int main() {

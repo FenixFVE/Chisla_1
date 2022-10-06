@@ -104,33 +104,50 @@ public:
 	}
 
 	// A=LU, L=?, U=?
+	template<std::floating_point F>
 	void LU_decompose_matrix() {
 
 		int half_band = band_size / 2;
 		for (int i = 0; i < matrix_size; ++i) {
-			int left = std::max(0, i - half_band);
-			int right_ = std::min(matrix_size, i + half_band + 1);
-			for (int j = left; j < right_; ++j) {
-				int up = std::min(0, 1); // ?
-				int k_start = std::max(up, left);
-				int k_end = 0;
-				if (i < j) {
-					k_end = i - 1;
+			
+			// lower
+			int start = std::max(0, half_band - i);
+			for (int j = start; j < half_band; ++j) {
+				F sum = 0.0;
+				int l_j = j - 1;
+				int u_i = i + j - half_band - 1;
+				int u_j = 0;
+				while (l_j >= 0 && u_i >= 0 && u_j < half_band) {
+					sum += al[i][l_j--] * au[u_i--][u_j++];
 				}
-				else {
-					k_end = j - 1;
-				}
-				T sum = 0;
-				for (int k = k_start; k <= k_end; ++i) {
-
-				}
-				if (i < j) {
-
-				}
-				else {
-
-				}
+				al[i][j] -= sum;
 			}
+			
+			// center
+			{
+				F sum = 0.0;
+				int l_j = half_band - 1;
+				int u_i = i - 1;
+				int u_j = 0;
+				while (l_j >= 0 && u_i >= 0 && u_j < half_band) {
+					sum += al[i][l_j--] * au[u_i--][u_j++];
+				}
+				di[i] -= sum;
+			}
+			
+			// upper
+			int end = std::min(half_band - 1, band_size - i);
+			for (int j = 0; j <= end; ++j) {
+				F sum = 0.0;
+				int l_j = half_band - 1;
+				int u_i = i - 1;
+				int u_j = j + 1;
+				while (u_i >= 0 && u_j < half_band) {
+					sum += al[i][l_j--] * au[u_i--][u_j++];
+				}
+				au[i][j] = (au[i][j] - sum) / di[i];
+			}
+			
 		}
 
 	}
@@ -170,6 +187,18 @@ public:
 				output[k - 1 - j] -= output[k] * au[i][j];
 			}
 		}
+
+	}
+
+	// Ax=y, x=?
+	template<std::floating_point F>
+	void compute_SLE(const vector<T>& input, vector<T>& output, vector<T>& buffer) {
+		if (matrix_size != input.size() || input.size() != output.size() || output.size() != buffer.size())
+			throw std::exception("error: SLE computation incompatible size");
+
+		this->LU_decompose_matrix<F>();
+		this->compute_SLE_by_forward_move(input, buffer);
+		this->compute_SLE_by_dackward_move(buffer, output);
 
 	}
 };

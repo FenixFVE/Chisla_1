@@ -42,5 +42,12 @@
     <Text Include="test_matrix_2.txt">
       <Filter>testing</Filter>
     </Text>
+    <Text Include="test_matrix_3.txt">
+      <Filter>testing</Filter>
+    </Text>
+    <Text Include="matrix_A.txt" />
+    <Text Include="vector_x_star.txt" />
+    <Text Include="output.txt" />
+    <Text Include="vector_F_k.txt" />
   </ItemGroup>
 </Project>
