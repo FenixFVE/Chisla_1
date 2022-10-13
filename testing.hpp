@@ -148,31 +148,31 @@ void multiply_lower_matrix_on_vector_test_2() {
 
 // - - -
 
-void compute_SLE_by_dackward_move_test() {
+void compute_SLE_by_backward_move_test() {
 	BandMatrix<double> matrix = read_matrix<double>("test_matrix_1.txt");
 	vector<double> vec = { 30, 100, 125, 99, 5 };
 	vector<double> actual(5);
 
 	vector<double> expected = { 1, 2, 3, 4, 5 };
 
-	matrix.compute_SLE_by_dackward_move(vec, actual);
+	matrix.compute_SLE_by_backward_move(vec, actual);
 
 	if (actual != expected) {
-		throw std::exception("dackward SLE computition test failed");
+		throw std::exception("backward SLE computition test failed");
 	}
 }
 
-void compute_SLE_by_dackward_move_test_2() {
+void compute_SLE_by_backward_move_test_2() {
 	BandMatrix<double> matrix = read_matrix<double>("test_matrix_2.txt");
 	vector<double> vec = { 5, 17, 35, 59, 5 };
 	vector<double> actual(5);
 
 	vector<double> expected = { 1, 2, 3, 4, 5 };
 
-	matrix.compute_SLE_by_dackward_move(vec, actual);
+	matrix.compute_SLE_by_backward_move(vec, actual);
 	
 	if (actual != expected) {
-		throw std::exception("dackward SLE computition test_2 failed");
+		throw std::exception("backward SLE computition test_2 failed");
 	}
 }
 
@@ -271,9 +271,9 @@ void testing() {
 		multiply_lower_matrix_on_vector_test_2();
 		std::cout << "lower matrix multiplication on vector tested\n";
 
-		compute_SLE_by_dackward_move_test();
-		compute_SLE_by_dackward_move_test_2();
-		std::cout << "dackward SLE computition tested\n";
+		compute_SLE_by_backward_move_test();
+		compute_SLE_by_backward_move_test_2();
+		std::cout << "backward SLE computition tested\n";
 
 		compute_SLE_by_forward_move_test();
 		compute_SLE_by_forward_move_test_2();

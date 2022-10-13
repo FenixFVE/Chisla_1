@@ -8,8 +8,7 @@
 #include <cmath>
 #include <iostream>
 #include <iomanip>
-
-typedef double real;
+#include <numeric>
 
 using std::vector;
 
@@ -79,7 +78,7 @@ public:
 	// Ax=y, y=?
 	void multiply_matrix_on_vector(const vector<T>& input, vector<T>& output) const {
 		if (matrix_size != input.size() || input.size() != output.size())
-			throw std::exception("error: lower matrix on vector multiplication incompatible sizes");
+			throw std::exception("error: matrix on vector multiplication incompatible sizes");
 
 		// diagonal
 		for (int i = 0; i < input.size(); ++i) {
@@ -166,7 +165,7 @@ public:
 	// Lx=y, x=?
 	void compute_SLE_by_forward_move(const vector<T>& input, vector<T>& output) const {
 		if (matrix_size != input.size() || input.size() != output.size())
-			throw std::exception("error: lower matrix on vector multiplication incompatible sizes");
+			throw std::exception("error: SLE computation by forward move incompatible size");
 
 		for (int i = 0; i < input.size(); ++i) {
 			output[i] = input[i];
@@ -183,9 +182,9 @@ public:
 	}
 
 	// Ux=y, x=?
-	void compute_SLE_by_dackward_move(const vector<T>& input, vector<T>& output) const {
+	void compute_SLE_by_backward_move(const vector<T>& input, vector<T>& output) const {
 		if (matrix_size != input.size() || input.size() != output.size())
-			throw std::exception("error: lower matrix on vector multiplication incompatible sizes");
+			throw std::exception("error: SLE computation by backward move incompatible size");
 
 		for (int i = 0; i < input.size(); ++i) {
 			output[i] = input[i];
@@ -209,7 +208,7 @@ public:
 
 		this->LU_decompose_matrix<F>();
 		this->compute_SLE_by_forward_move(input, buffer);
-		this->compute_SLE_by_dackward_move(buffer, output);
+		this->compute_SLE_by_backward_move(buffer, output);
 
 	}
 };
@@ -274,28 +273,3 @@ void print_vector(const vector<T>& vec, std::string vector_file, int precision) 
 
 }
 
-BandMatrix<double> create_Gilbert_matrix(int size) {
-
-	BandMatrix<double> band_matrix(size, 2 * (size - 1) + 1);
-
-	int half_band = size - 1;
-
-	for (int i = 0; i < size; ++i) {
-		band_matrix.di[i] = 1.0 / (i + i + 1);
-	}
-
-	for (int i = 0; i < size; ++i) {
-
-		int l_j = std::min(half_band - 1, half_band - i);
-		for (int j = 0; j < i && l_j < half_band; ++j, ++l_j) {
-			band_matrix.al[i][l_j] = 1.0 / (i + j + 1);
-		}
-
-		int u_j = 0;
-		for (int j = i + 1; j < size && u_j < half_band; ++j, ++u_j) {
-			band_matrix.au[i][u_j] = 1.0 / (i + j + 1);
-		}
-	}
-
-	return band_matrix;
-}

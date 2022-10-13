@@ -29,6 +29,12 @@
     <ClInclude Include="testing.hpp">
       <Filter>testing</Filter>
     </ClInclude>
+    <ClInclude Include="gauss_matrix.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gilbert_matrix.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="input_matrix.txt" />
@@ -51,5 +57,7 @@
     <Text Include="vector_x_k.txt" />
     <Text Include="vector_of_dif.txt" />
     <Text Include="matrix_A_2.txt" />
+    <Text Include="config.txt" />
+    <Text Include="gauss_matrix_A.txt" />
   </ItemGroup>
 </Project>

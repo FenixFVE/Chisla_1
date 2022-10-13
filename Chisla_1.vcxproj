@@ -132,15 +132,19 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="gauss_matrix.hpp" />
+    <ClInclude Include="gilbert_matrix.hpp" />
     <ClInclude Include="matrix.hpp" />
     <ClInclude Include="testing.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="gauss_matrix_A.txt" />
     <Text Include="input_matrix.txt" />
     <Text Include="input_vector.txt" />
     <Text Include="matrix_A.txt" />
     <Text Include="matrix_A_2.txt" />
     <Text Include="output.txt" />
+    <Text Include="config.txt" />
     <Text Include="test_matrix_1.txt" />
     <Text Include="test_matrix_2.txt" />
     <Text Include="test_matrix_3.txt" />
